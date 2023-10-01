@@ -1,3 +1,4 @@
+import os.path
 import tkinter as tk
 from pytube import Playlist
 
@@ -8,9 +9,13 @@ def download_playlist():
 
     for video in playlist.videos:
         try:
-            print(f"Téléchargement de la vidéo : {video.title}")
-            video.streams.get_audio_only().download(output_path='downloads/')
-            print(f"La vidéo {video.title} a été téléchargée avec succès!")
+            file_path = os.path.join('downloads/', f"{video.title}.mp4")
+            if not os.path.exists(file_path):
+                print(f"Téléchargement de la vidéo : {video.title}")
+                video.streams.get_audio_only().download(output_path='downloads/')
+                print(f"La vidéo {video.title} a été téléchargée avec succès!")
+            else:
+                print(f"La vidéo {video.title} existe déjà dans le dossier downloads")
         except Exception as e:
             print(f"Erreur lors du téléchargement de la vidéo {video.title}: {str(e)}")
 
